@@ -945,7 +945,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bfe0d2eebcb4f79b9a211aa6aa527ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  edgeHighlightColour: {r: 0, g: 0.45076013, b: 1, a: 1}
+  player: {fileID: 1457451107}
+  edgeHighlightColour: {r: 1, g: 0.62319684, b: 0, a: 1}
 --- !u!135 &1434109885
 SphereCollider:
   m_ObjectHideFlags: 0
