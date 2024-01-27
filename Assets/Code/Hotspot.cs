@@ -1,9 +1,7 @@
-﻿using UnityEngine;
+﻿using System.Threading.Tasks;
+using UnityEngine;
 
-public class Hotspot : MonoBehaviour
+public abstract class Hotspot : MonoBehaviour
 {
-    public void Interact()
-    {
-        Debug.Log("Interacting with " + name);
-    }
+    public abstract Task Interact(Player player);
 }

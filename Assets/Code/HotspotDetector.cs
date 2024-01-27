@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 
 [RequireComponent(typeof(SphereCollider), typeof(Rigidbody))]
@@ -9,10 +11,19 @@ public class HotspotDetector : MonoBehaviour
     [SerializeField] private Color edgeHighlightColour;
 
     private readonly List<Hotspot> _hotspots = new();
+    private Hotspot _activeHotspot;
 
     private static readonly int OutlineColor = Shader.PropertyToID("_OutlineColor");
 
-    public void Interact()
+    public async Task Interact(Player p)
+    {
+        if (!_activeHotspot) return;
+        p.InteractionEnabled = false;
+        await _activeHotspot.Interact(p);
+        p.InteractionEnabled = true;
+    }
+
+    private void Update()
     {
         _hotspots.Sort((h1, h2) =>
         {
@@ -21,16 +32,23 @@ public class HotspotDetector : MonoBehaviour
             var distance2 = Vector3.Distance(h2.transform.position, ourPosition);
             return Mathf.RoundToInt(distance1 * 100 - distance2 * 100);
         });
-        var h = _hotspots.First();
-        SetEdgeColour(Color.black, h);
-        h.Interact();
+        
+        foreach (var hotspot in _hotspots)
+        {
+            SetEdgeColour(new Color(0, 0, 0, 0), hotspot);
+        }
+
+        _activeHotspot = _hotspots.FirstOrDefault();
+        if (_activeHotspot)
+        {
+            SetEdgeColour(edgeHighlightColour, _activeHotspot);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (!player.InteractionEnabled) return;
         if (!other.TryGetComponent(out Hotspot hotspot)) return;
-        SetEdgeColour(edgeHighlightColour, hotspot);
         _hotspots.Add(hotspot);
     }
 
@@ -38,7 +56,7 @@ public class HotspotDetector : MonoBehaviour
     {
         if (!player.InteractionEnabled) return;
         if (!other.TryGetComponent(out Hotspot hotspot)) return;
-        SetEdgeColour(Color.black, hotspot);
+        SetEdgeColour(new Color(0, 0, 0, 0), hotspot);
         _hotspots.Remove(hotspot);
     }
 

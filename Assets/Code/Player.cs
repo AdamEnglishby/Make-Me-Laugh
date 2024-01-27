@@ -12,8 +12,8 @@ public class Player : LocomotionDriver
     [SerializeField] private float acceleration = 10f;
     [SerializeField] private float deceleration = 5f;
 
-    [Header("Interaction Parameters")] [SerializeField]
-    private HotspotDetector detector;
+    [Header("Interaction Parameters")]
+    [SerializeField] private HotspotDetector detector;
 
     private float _actualSpeed;
 
@@ -74,11 +74,12 @@ public class Player : LocomotionDriver
         _inputDirection = new Vector3(input.x, 0, input.y);
     }
 
-    public void OnInteract(InputValue value)
+    public async void OnInteract(InputValue value)
     {
         if (value.isPressed && InteractionEnabled)
         {
-            detector.Interact();
+            await detector.Interact(this);
         }
     }
+    
 }
