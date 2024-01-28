@@ -7,13 +7,13 @@ public class DoorLogic : Hotspot
     {
         if (!ProgressFlags._1_Showered)
         {
-            Debug.Log("NEED TO SHOWER FIRST");
+            DialogueManager.AddText("I should shower & eat first...");
             return;
         }
 
         if (!ProgressFlags._1_Breakfast)
         {
-            Debug.Log("NEED BREAKFAST FIRST");
+            DialogueManager.AddText("I need to make breakfast...");
             return;
         }
 
@@ -22,16 +22,15 @@ public class DoorLogic : Hotspot
             ProgressFlags._1_Work = true;
 
             player.MovementEnabled = false;
-            await Awaitable.WaitForSecondsAsync(1f);
-            // FADE OUT
-            await Awaitable.WaitForSecondsAsync(1f);
-            // FADE IN
+            await DialogueManager.FadeToBlack();
+            await Awaitable.WaitForSecondsAsync(1.5f);
+            DialogueManager.AddText("Another long day... I'll make some food & zone out for a while.");
+            await DialogueManager.FadeBackIn();
             player.MovementEnabled = true;
             
-            Debug.Log("GOING TO WORK");
             return;
         }
         
-        Debug.Log("NOT GOING ANYWHERE THIS EVENING");
+        DialogueManager.AddText("I have nowhere to go this evening.");
     }
 }

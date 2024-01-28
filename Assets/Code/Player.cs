@@ -15,6 +15,9 @@ public class Player : LocomotionDriver
     [Header("Interaction Parameters")]
     [SerializeField] private HotspotDetector detector;
 
+    private static Player _instance;
+    public static Player Instance => _instance;
+    
     private float _actualSpeed;
 
     protected override float Speed
@@ -31,6 +34,7 @@ public class Player : LocomotionDriver
 
     private void OnEnable()
     {
+        _instance = this;
         base.Init();
     }
 

@@ -3,21 +3,22 @@ using UnityEngine;
 
 public class SofaLogic : Hotspot
 {
-    public override async Task Interact(Player player)
+    public override Task Interact(Player player)
     {
         if (!ProgressFlags._1_Dinner)
         {
-            Debug.Log("NEED TO MAKE DINNER FIRST");
-            return;
+            DialogueManager.AddText("I need to get food before I sit down for the night.");
+            return Task.CompletedTask;
         }
 
         if (!ProgressFlags._1_Sofa)
         {
             ProgressFlags._1_Sofa = true;
-            Debug.Log("CONSUMING MEDIA ON THE SOFA");
-            return;
+            DialogueManager.AddText("[Consuming media]...");
+            return Task.CompletedTask;
         }
         
-        Debug.Log("TIME FOR BED");
+        DialogueManager.AddText("I need to get some sleep...");
+        return Task.CompletedTask;
     }
 }

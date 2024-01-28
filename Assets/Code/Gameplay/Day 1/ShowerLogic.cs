@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using UnityEngine;
 
 public class ShowerLogic : Hotspot
 {
@@ -8,10 +7,22 @@ public class ShowerLogic : Hotspot
         if (!ProgressFlags._1_Showered)
         {
             ProgressFlags._1_Showered = true;
-            Debug.Log("SHOWERING");
+            player.InteractionEnabled = false;
+            player.MovementEnabled = false;
+            await DialogueManager.FadeToBlack();
+            DialogueManager.AddText("Showering...");
+            await DialogueManager.FadeBackIn();
+            player.MovementEnabled = true;
+            player.InteractionEnabled = true;
+            return;
+        }
+
+        if (!ProgressFlags._1_Work)
+        {
+            DialogueManager.AddText("I've already showered, need to make breakfast...");
             return;
         }
         
-        Debug.Log("ALREADY SHOWERED");
+        DialogueManager.AddText("I'll shower in the morning...");
     }
 }

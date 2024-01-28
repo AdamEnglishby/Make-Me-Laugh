@@ -3,15 +3,16 @@ using UnityEngine;
 
 public class SpeakerLogic : Hotspot
 {
-    public override async Task Interact(Player player)
+    public override Task Interact(Player player)
     {
         if (!ProgressFlags._1_Sofa)
         {
-            Debug.Log("NEED TO CONSUME MEDIA FIRST");
-            return;
+            DialogueManager.AddText("I have nothing to say to my smart speaker.");
+            return Task.CompletedTask;
         }
 
         ProgressFlags._1_Laugh = true;
-        Debug.Log("Hey Computer, make me laugh");
+        DialogueManager.AddText("Hey computer, make me laugh.");
+        return Task.CompletedTask;
     }
 }
